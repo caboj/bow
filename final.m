@@ -1,5 +1,5 @@
 %% Load images
-<<<<<<< Updated upstream
+
 planes = dir(fullfile('Caltech4','ImageData','airplanes_train','*.jpg'));
 planes = {planes.name}';
 %% Compute SIFT descriptors and perform k-means clustering
@@ -16,7 +16,6 @@ planesDarray = double(planesDarray);
 [planesC,planesA] = vl_kmeans(planesDarray,10);
 planesK = kmeans(planesDarray,10);
 %% Compute histograms
-=======
 % planes = dir(fullfile('Caltech4','ImageData','airplanes_train','*.jpg'));
 % planes = {planes.name}';
 faces = dir(fullfile('Caltech4','ImageData','faces_train','*.jpg'));
@@ -53,4 +52,4 @@ figure; bar(test_quant./sum(test_quant))
 for i = 1:n
     test = single(rgb2gray(imread(faces{end-i})));
 end
->>>>>>> Stashed changes
+
