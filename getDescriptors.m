@@ -1,5 +1,5 @@
-function D = getDescriptors(class,im_range, colorSpace)
-    filePath=importdata(sprintf('Caltech4/ImageSets/%s_train.txt',class));
+function D = getDescriptors(class,type,im_range, colorSpace)
+    filePath=importdata(sprintf('Caltech4/ImageSets/%s_%s.txt',class,type));
     if strcmp(colorSpace,'gray')
         dlen = 128;
     else
