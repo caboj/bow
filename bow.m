@@ -1,4 +1,4 @@
-function train = bow(k,colorSpace)
+function train = bow(k,colorSpace,trainN)
     if strcmp(colorSpace,'gray')
         dlen = 128;
     else
@@ -20,12 +20,30 @@ function train = bow(k,colorSpace)
 
     % build training data per class
     fprintf(' building training data...\n');
-    train = zeros(10,k,4);
+    fprintf('   ...setting positive examples'\n);
+    train = zeros(trainN+3*floor(trainN/3),k,4);
     for ci = 1:size(classes,2)
-        for ii = 1:10
+        for ii = 1:trainN
             imi = 290+ii;
             D=getDescriptors(char(classes(ci)),imi,colorSpace);
             train(ii,:,ci) = getXdata(D,words);
         end
     end
+    
+    fprintf('   ...setting negative examples'\n);
+    for ci = 1:size(classes,2)
+        idx = randi(trainN,1,floor(trainN/3));
+        cls = 1:4;
+        cn = 0;
+        for nci = [cls(1:ci-1) cls(ci+1:4)]
+            for ii = 1:floor(trainN/3)
+                ixi = trainN+cn*floor(trainN/3)+ii;
+                train(ixi,:,ci) = train(idx(ii),:,nci);
+            end
+            cn = cn+1;
+        end
+    end
+    
+    
+    
 end
