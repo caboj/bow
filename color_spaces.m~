@@ -2,10 +2,8 @@ function spaced = color_spaces(im,space)
     spaced = zeros(size(im));
     if strcmp(space,'gray')
         if size(size(im),2) == 2
-            spaced = im;
-        else
-            spaced = rgb2gray(im);
-        end
+            
+        spaced = rgb2gray(im);
     % if space is other than gray, but image is in gray,
     % replicate grayscale to ensure correct amount of descriptors
     else

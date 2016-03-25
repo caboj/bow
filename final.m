@@ -8,6 +8,7 @@
 %     im = single(rgb2gray(im));
 %     [~,D] = vl_sift(im);
 %     planesDlist{i} = D;
+
 % end
 % planesDarray = [planesDlist{:}];
 % planesDarray = double(planesDarray);

@@ -1,0 +1,11 @@
+function D = getDescriptors(class,im_range, colorSpace)
+    filePath=importdata(sprintf('Caltech4/ImageSets/%s_train.txt',class));
+    D = zeros(384,1);
+    for img=im_range %length(filePath)
+        path = strcat('Caltech4/ImageData/',filePath{img},'.jpg');
+        im = color_spaces(imread(path),colorSpace);
+        [~,d] = vl_phow(im2single(im),'Color',colorSpace);
+        D=cat(3,D,d);
+    end
+    D = D(:,2:end);
+end
