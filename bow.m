@@ -1,4 +1,4 @@
-function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
+function [faces,cars, motorbikes,airplanes,words] = bow(k,colorSpace,trainN)
     if strcmp(colorSpace,'gray')
         dlen = 128;
     else
@@ -21,8 +21,9 @@ function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
     
     ts = tic;
     fprintf(' finding vocab - clustering ... ');
-    %[words,~] = vl_kmeans(single(D),k);
-    [~,words] = kmeans(single(D'),k);
+    [words,~] = vl_kmeans(single(D),k);
+    words = words';
+    %[~,words] = kmeans(single(D'),k,'MaxIter',1e10);
     toc(ts);
     
     % build training data per class
@@ -42,12 +43,11 @@ function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
     for ci = 1:size(classes,2)
         idx = randi(trainN,1,trainN);
         cls = 1:4;
-        cn = 0;
+        cn = 1;
         for nci = [cls(1:ci-1) cls(ci+1:4)]
-            for ii = 1:trainN
-                ixi = trainN+cn*trainN+ii;
-                train(ixi,:,ci) = train(idx(ii),:,nci);
-            end
+            ixi_start = cn*trainN+1;
+            ixi_end = (cn+1)*trainN;
+            train(ixi_start:ixi_end,:,ci) = train(1:150,:,nci);
             cn = cn+1;
         end
     end
