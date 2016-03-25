@@ -1,4 +1,4 @@
-function [faces,cars ] = bow(k,colorSpace,trainN)
+function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
     if strcmp(colorSpace,'gray')
         dlen = 128;
     else
@@ -10,7 +10,7 @@ function [faces,cars ] = bow(k,colorSpace,trainN)
     fprintf(' extracting SIFT desciptors for vocabulary ...\n');
 
     for i = 1:size(classes,2)
-        d = getDescriptors(char(classes(i)),'train',1:3,colorSpace);
+        d = getDescriptors(char(classes(i)),'train',1:250,colorSpace);
         D=cat(2,D,d);
     end
     D=D(:,2:end);
@@ -25,7 +25,7 @@ function [faces,cars ] = bow(k,colorSpace,trainN)
     train = zeros(4*trainN,k,4);
     for ci = 1:size(classes,2)
         for ii = 1:trainN
-            imi = 290+ii;
+            imi = 250+ii;
             D=getDescriptors(char(classes(ci)),'train',imi,colorSpace);
             train(ii,:,ci) = getXdata(D,words);
         end
@@ -68,17 +68,52 @@ function [faces,cars ] = bow(k,colorSpace,trainN)
         end
         range = (ci-1)*50+1:ci*50;
         
-        [label,score] =  predict(faces_svm,testD);
-        faces.res(range,1:2) = [label,score(:,2)];
-        faces.fns(range) = filePath;
-        [label,score] = predict(cars_svm,testD);
-        cars.res(range,1:2)= [label,score(:,2)];
-        cars.fns(range) = filePath;
-        [label,score] = predict(motorbikes_svm,testD);
-        motorbikes.res(range,1:2) = [label,score(:,2)];
-        motorbikes.fns(range) = filePath;
-        [label,score] = predict(airplanes_svm,testD);
-        airplanes.res(range,1:2) = [label,score(:,2)];
-        airplanes.fns(range) = filePath;
+        [labels,scores] =  predict(faces_svm,testD);
+        faces.labels(range) = labels;
+        faces.scores(range) = scores(:,2);
+        faces.fns(range) = filePath';
+        [labels,scores] = predict(cars_svm,testD);
+        cars.labels(range) = labels;
+        cars.scores(range) = scores(:,2);
+        cars.fns(range) = filePath';
+        [labels,scores] = predict(motorbikes_svm,testD);
+        motorbikes.labels(range) = labels;
+        motorbikes.scores(range) = scores(:,2);
+        motorbikes.fns(range) = filePath';
+        [labels,scores] = predict(airplanes_svm,testD);
+        airplanes.labels(range) = labels;
+        airplanes.scores(range) = scores(:,2);
+        airplanes.fns(range) = filePath';
     end
+
+    faces.reals = [ones(50,1);-1*ones(150,1)];
+    [~,order] = sort(faces.scores,1,'descend');
+    faces.fns = faces.fns(order);
+    faces.labels = faces.labels(order);
+    faces.scores = faces.scores(order);
+    faces.reals = faces.reals(order);
+    
+    cars.reals = [-1*ones(50,1);ones(50,1);-1*ones(100,1)];
+    [~,order] = sort(cars.scores,1,'descend');
+    cars.fns = cars.fns(order);
+    cars.labels = cars.labels(order);
+    cars.scores = cars.scores(order);
+    cars.reals = cars.reals(order);
+    
+    motorbikes.reals = [-1*ones(100,1);ones(50,1);-1*ones(50,1)];
+    [~,order] = sort(motorbikes.scores,1,'descend');
+    motorbikes.fns = motorbikes.fns(order);
+    motorbikes.labels = motorbikes.labels(order);
+    motorbikes.scores = motorbikes.scores(order);
+    motorbikes.reals = motorbikes.reals(order);
+    
+    airplanes.reals = [-1*ones(150,1);ones(50,1)];
+    [~,order] = sort(airplanes.scores,1,'descend');
+    airplanes.fns = airplanes.fns(order);
+    airplanes.labels = airplanes.labels(order);
+    airplanes.scores = airplanes.scores(order);
+    airplanes.reals = airplanes.reals(order);
+    
+    
+    
 end
