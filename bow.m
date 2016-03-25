@@ -7,21 +7,25 @@ function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
     D = zeros(dlen,1);
     % build vocabulary with all classes
     classes = {'faces' 'cars' 'motorbikes' 'airplanes'};
-    fprintf(' extracting SIFT desciptors for vocabulary ...\n');
+    ts = tic;
+    fprintf(' extracting SIFT desciptors ... ');
 
     for i = 1:size(classes,2)
-        d = getDescriptors(char(classes(i)),'train',1:250,colorSpace);
+        d = getDescriptors(char(classes(i)),'train',1:100,colorSpace);
         D=cat(2,D,d);
     end
     D=D(:,2:end);
-    
-    fprintf(' finding vocab - clustering ...\n');
+    fprintf( 'found %d - ',size(D,2));
+    toc(ts);
+    ts = tic;
+    fprintf(' finding vocab - clustering ... ');
     %[words,~] = vl_kmeans(single(D),k);
     [~,words] = kmeans(single(D'),k);
-
+    toc(ts);
+    
     % build training data per class
-    fprintf(' building training data ...\n');
-    fprintf('   ... setting positive examples\n');
+    ts = tic;
+    fprintf(' building training data ... ');
     train = zeros(4*trainN,k,4);
     for ci = 1:size(classes,2)
         for ii = 1:trainN
@@ -31,7 +35,6 @@ function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
         end
     end
     
-    fprintf('   ... setting negative examples\n');
     for ci = 1:size(classes,2)
         idx = randi(trainN,1,trainN);
         cls = 1:4;
@@ -47,14 +50,21 @@ function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
     
     y = ones(4*trainN,1);
     y(trainN+1:end) = -1;
+    
+    toc(ts);
+    ts = tic;
+    
     % training SVM calssifiers
-    fprintf(' training SVMs ... \n');
+    fprintf(' training SVMs ... ');
     faces_svm = fitcsvm(train(:,:,1),y);
     cars_svm = fitcsvm(train(:,:,2),y);
     motorbikes_svm = fitcsvm(train(:,:,3),y); 
     airplanes_svm = fitcsvm(train(:,:,4),y); 
     
-    fprintf(' evaluating ...\n');
+    toc(ts);
+    ts = tic;
+    
+    fprintf(' evaluating ... ');
     faces = struct;
     cars= struct;
     motorbikes = struct;
@@ -85,7 +95,8 @@ function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
         airplanes.scores(range) = scores(:,2);
         airplanes.fns(range) = filePath';
     end
-
+    toc(ts);
+        
     faces.reals = [ones(50,1);-1*ones(150,1)];
     [~,order] = sort(faces.scores,1,'descend');
     faces.fns = faces.fns(order);
