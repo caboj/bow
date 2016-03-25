@@ -5,18 +5,20 @@ function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
         dlen = 384;
     end
     D = zeros(dlen,1);
-    % build vocabulary with all classes
+    % build vocabulary with all classes with first range voc_imgs
+    voc_imgs = 1:250;
     classes = {'faces' 'cars' 'motorbikes' 'airplanes'};
     ts = tic;
     fprintf(' extracting SIFT desciptors ... ');
 
     for i = 1:size(classes,2)
-        d = getDescriptors(char(classes(i)),'train',1:100,colorSpace);
+        d = getDescriptors(char(classes(i)),'train',voc_imgs,colorSpace);
         D=cat(2,D,d);
     end
     D=D(:,2:end);
     fprintf( 'found %d - ',size(D,2));
     toc(ts);
+    
     ts = tic;
     fprintf(' finding vocab - clustering ... ');
     %[words,~] = vl_kmeans(single(D),k);
@@ -24,6 +26,7 @@ function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
     toc(ts);
     
     % build training data per class
+    % select trainN images from 250 up
     ts = tic;
     fprintf(' building training data ... ');
     train = zeros(4*trainN,k,4);
@@ -35,6 +38,7 @@ function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
         end
     end
     
+    % add trainN negative examples of other classes
     for ci = 1:size(classes,2)
         idx = randi(trainN,1,trainN);
         cls = 1:4;
@@ -96,7 +100,8 @@ function [faces,cars, motorbikes,airplanes ] = bow(k,colorSpace,trainN)
         airplanes.fns(range) = filePath';
     end
     toc(ts);
-        
+    
+    
     faces.reals = [ones(50,1);-1*ones(150,1)];
     [~,order] = sort(faces.scores,1,'descend');
     faces.fns = faces.fns(order);
