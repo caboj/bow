@@ -1,11 +1,11 @@
-exps = { 'experiment1results.mat' 'experiment2results.mat' 'experiment3results.mat' 'experiment4results.mat' 'experiment6results.mat'};
+exps = { 'experiment1results.mat' 'experiment7results.mat' 'experiment8results.mat' 'experiment9results.mat' 'experiment10results.mat'};
 
 map = zeros(4,5);
-spaces = {};
+ks = zeros(5,1);
 classes = {'faces' 'cars' 'motorbikes' 'airplanes'};
 for i = 1:5
     load(char(exps(i)))
-    spaces(i) = { colorSpace};
+    ks(i) = k;
     for ci = 1:4
         map(ci,i) = MAP(eval(char(classes(ci))));
     end

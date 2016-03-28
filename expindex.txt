@@ -4,3 +4,7 @@
 4 - hsv 400
 5 - gray 1000
 6 - RGB 400
+7 - gray 800
+8 - gray 1600
+9 - gray 2000
+10 - gray 4000
