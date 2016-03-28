@@ -4,7 +4,6 @@ function [train, y] = buildTrainingData(classes, trainSet, words, k, colorSpace 
     trainN = size(trainSet,2);
     % build training data per class
     % select trainN images from 250 up
-    ts = tic;
     fprintf(' building training data ... ');
     train = zeros(4*trainN,k,4);
     for ci = 1:size(classes,2)
@@ -28,6 +27,6 @@ function [train, y] = buildTrainingData(classes, trainSet, words, k, colorSpace 
         end
     end
     
-    y = [ones(trainN,1);zeros(3*trainN,1)];
-    toc(ts)
+    y = [ones(trainN,1);-1*ones(3*trainN,1)];
+    toc(st)
 end

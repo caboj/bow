@@ -18,21 +18,21 @@ function [faces,cars,motorbikes, airplanes] = evaluate(classes,words, k, ...
         range = (ci-1)*50+1:ci*50;
         
         [labels,scores] =  predict(faces_svm,testD);
-        faces.labels(range) = labels;
-        faces.scores(range) = scores(:,2);
-        faces.fns(range) = filePath';
+        faces.labels(range,1) = labels;
+        faces.scores(range,1) = scores(:,2);
+        faces.fns(range,1) = filePath';
         [labels,scores] = predict(cars_svm,testD);
-        cars.labels(range) = labels;
-        cars.scores(range) = scores(:,2);
-        cars.fns(range) = filePath';
+        cars.labels(range,1) = labels;
+        cars.scores(range,1) = scores(:,2);
+        cars.fns(range,1) = filePath';
         [labels,scores] = predict(motorbikes_svm,testD);
-        motorbikes.labels(range) = labels;
-        motorbikes.scores(range) = scores(:,2);
-        motorbikes.fns(range) = filePath';
+        motorbikes.labels(range,1) = labels;
+        motorbikes.scores(range,1) = scores(:,2);
+        motorbikes.fns(range,1) = filePath';
         [labels,scores] = predict(airplanes_svm,testD);
-        airplanes.labels(range) = labels;
-        airplanes.scores(range) = scores(:,2);
-        airplanes.fns(range) = filePath';
+        airplanes.labels(range,1) = labels;
+        airplanes.scores(range,1) = scores(:,2);
+        airplanes.fns(range,1) = filePath';
     end
     toc(ts);
     

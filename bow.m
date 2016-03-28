@@ -5,7 +5,7 @@ function [faces,cars, motorbikes,airplanes, faces_svm,cars_svm,motorbikes_svm,ai
 
     words = getWords(classes,k,shuffled(1:200), 'gray');
     
-    train = buildTrainingData(classes, trainN, words, k, 'gray');
+    train = buildTrainingData(classes, shuffled(201:400), words, k, 'gray');
     
     ts = tic;
     

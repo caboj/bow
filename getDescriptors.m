@@ -5,7 +5,7 @@ function D = getDescriptors(class,type,im_range, colorSpace)
         path = strcat('Caltech4/ImageData/',filePath{img},'.jpg');
         im = color_spaces(imread(path),colorSpace);
         [~,d] = vl_sift(im2single(im));
-        %[~,d] = vl_phow(im2single(im),'Sizes',[4],'ContrastThreshold',0.05,'Color',colorSpace);
+        %[~,d] = vl_phow(im2single(im),'Color',colorSpace);
         D=cat(2,D,d);
     end
 end

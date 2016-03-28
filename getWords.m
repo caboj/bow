@@ -1,4 +1,4 @@
-function  words  = getWords(classes, k, voc_imgs, colorSpace)
+function  [idx,words ] = getWords(classes, k, voc_imgs, colorSpace)
     D =[];
     % build vocabulary with all classes with first range voc_imgs
     ts = tic;
@@ -14,9 +14,9 @@ function  words  = getWords(classes, k, voc_imgs, colorSpace)
     ts = tic;
     fprintf(' finding vocab - clustering ... ');
     %load('words.mat');
-    %[words,~] = vl_kmeans(single(D'),k);
-    %words = words';
-    [~,words] = kmeans(double(D'),k,'MaxIter',1e6, 'OnlinePhase', 'on');
+    [words,idx] = vl_kmeans(single(D),k);
+    words = words';
+    %[idx,words] = kmeans(double(D'),k); %'MaxIter',1e6, 'OnlinePhase', 'on');
     toc(ts);
 end
 
