@@ -129,3 +129,34 @@ for n=1:50
 end
 toc;
 [predict_label,accuracy,dec_values] = svmpredict(ones(50,1),pos_test_histogram,model_airplane);
+
+
+
+sigma = 2e-3;
+% rbfKernel = @(X,Y) exp(-sigma .* pdist2(X,Y,'euclidean').^2);
+% tanh(gamma*u'*v + coef0)
+coef0=0;
+
+rbfKernel = @(X,Y) tanh((sigma .* (X*Y)) + coef0);
+
+numTrain=size(features,1);
+numTest=size(pos_test_histogram,1);
+
+tmp2=rbfKernel(features,pos_test_histogram');
+tmp3=zeros(size(tmp2,1));
+tmp4=(1:numTrain)';
+tmp3=zeros(size(tmp2,1),1);
+tmp3(1:size(tmp4,1),:)=tmp4;
+
+K =  [ tmp3 , tmp2 ];
+
+tmp2=rbfKernel(features,pos_test_histogram');
+tmp3=zeros(size(tmp2,1));
+tmp4=(1:numTrain)';
+tmp3=zeros(size(tmp2,1),1);
+tmp3(1:size(tmp4,1),:)=tmp4;
+
+KK = [ tmp3  , tmp2  ];
+
+model = svmtrain(labels, K, '-t 4');
+[predClass, acc, decVals] = svmpredict(ones(50,1), KK, model);
