@@ -7,9 +7,9 @@ function [p,map, ap] = getAP(resStruct)
     ap(1) = f(predictions(1),reals(1));
     
     for i = 2:n
-        ap(i) = sum(ap(1:i-1))+f(predictions(i),reals(i))/i;
+        ap(i) = f(predictions(i),reals(i))/i;
     end
-    map = (1/50)*ap(n);
+    map = (1/50)*sum(ap);
     p = sum(predictions == reals)/n;
 end
 
