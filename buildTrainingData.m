@@ -1,4 +1,4 @@
-function [train, y] = buildTrainingData(classes, trainSet, words, k, colorSpace )
+function [train, y] = buildTrainingData(classes, trainSet, words, k, colorSpace ,binsize)
 
     st= tic;
     trainN = size(trainSet,2);
@@ -9,7 +9,7 @@ function [train, y] = buildTrainingData(classes, trainSet, words, k, colorSpace 
     for ci = 1:size(classes,2)
         i = 1;
         for ii = trainSet
-            D=getDescriptors(char(classes(ci)),'train',ii,colorSpace);
+            D = getDescriptors(char(classes(ci)),'train',ii, colorSpace,binsize);
             train(i,:,ci) = getXdata(D,words);
             i = i+1;
         end

@@ -1,11 +1,11 @@
-function  words = getWords(classes, k, voc_imgs, colorSpace)
+function  words = getWords(classes, k, voc_imgs, colorSpace,binsize)
     D =[];
     % build vocabulary with all classes with first range voc_imgs
     ts = tic;
     fprintf(' extracting SIFT desciptors ... ');
 
     for i = 1:size(classes,2)
-        d = getDescriptors(char(classes(i)),'train',voc_imgs,colorSpace);
+        d = getDescriptors(char(classes(i)),'train',voc_imgs,colorSpace,binsize);
         D=cat(2,D,d);
     end
     fprintf( 'found %d - ',size(D,2));

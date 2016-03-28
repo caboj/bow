@@ -1,4 +1,4 @@
-function [faces,cars,motorbikes, airplanes] = evaluate(classes,words, k, ...
+function [faces,cars,motorbikes, airplanes] = evaluate(classes,words, k,binsize, ...
             colorSpace, faces_svm, cars_svm, motorbikes_svm, airplanes_svm)
 
     ts = tic;
@@ -12,7 +12,7 @@ function [faces,cars,motorbikes, airplanes] = evaluate(classes,words, k, ...
         filePath=importdata(sprintf('Caltech4/ImageSets/%s_test.txt',char(classes(ci))));
         testD = zeros(50,k);
         for imi = 1:50
-            D = getDescriptors(char(classes(ci)),'test',imi,colorSpace);
+            D = getDescriptors(char(classes(ci)),'test',imi,colorSpace,binsize);
             testD(imi,:) = getXdata(D,words);
         end
         range = (ci-1)*50+1:ci*50;

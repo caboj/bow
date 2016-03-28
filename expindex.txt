@@ -9,3 +9,10 @@
 9 - gray 2000
 10 - gray 4000
 11 - gray 200
+12 - trainN 150
+13 - trainN 100
+14 - trainN 50
+15 - rbfkernel
+16 - poly3
+17 - poly4
+18 - rgb poly 4

@@ -1,4 +1,5 @@
 function spaced = color_spaces(im,space)
+
     spaced = zeros(size(im));
     if strcmp(space,'gray')
         if size(size(im),2) == 2
