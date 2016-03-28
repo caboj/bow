@@ -3,4 +3,4 @@
 3 - opponent 400
 4 - hsv 400
 5 - gray 1000
-6 - rgb 1000
+6 - RGB 400

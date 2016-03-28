@@ -4,6 +4,10 @@ function Features = colourSpacesSift(Image, Colour_Space)
 %     img=imread(Image);
     img = Image;
     switch (Colour_Space)
+        case 'RGB'
+            rn=double(img(:,:,1));
+            gn=double(img(:,:,2));
+            bn=double(img(:,:,3));
         case 'rgb'
             summed=sum(img(:,:,:),3);
             r=double(img(:,:,1));
@@ -12,7 +16,6 @@ function Features = colourSpacesSift(Image, Colour_Space)
             rn=r./summed;
             gn=g./summed;
             bn=b./summed;
-            
         case 'opponent'
             r=double(img(:,:,1));
             g=double(img(:,:,2));

@@ -12,7 +12,7 @@ function spaced = color_spaces(im,space)
         if size(size(im),2) == 2
             im = repmat(im,1,1,3);
         end
-        if strcmp(space,'rgb')
+        if strcmp(space,'RGB')
             ch1 = im(:,:,1);
             ch2 = im(:,:,2);
             ch3 = im(:,:,3);
@@ -26,7 +26,7 @@ function spaced = color_spaces(im,space)
             ch1 = (im(:,:,1)-im(:,:,2)) ./ sqrt(2);
             ch2 = (im(:,:,1)+im(:,:,2)-2*im(:,:,3))./ sqrt(6);
             ch3 = (im(:,:,1)+im(:,:,2)+im(:,:,3))./ sqrt(3);
-        elseif strcmp(space,'RGB')
+        elseif strcmp(space,'rgb')
             % seperate chanels
             ch1 = im(:,:,1); ch2 = im(:,:,2); ch3 = im(:,:,3);
             % pointwise normalize
