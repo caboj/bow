@@ -1,11 +1,10 @@
-function [faces,cars, motorbikes,airplanes, faces_svm,cars_svm,motorbikes_svm,aiplanes_svm] = bow(k,colorSpace,trainN)
+function [faces,cars, motorbikes,airplanes,words] = bow(k,colorSpace,voc_imgs, train_imgs)
 
-    shuffled = randperm(400);
     classes = {'faces' 'cars' 'motorbikes' 'airplanes'};
 
-    words = getWords(classes,k,shuffled(1:200), 'gray');
+    words = getWords(classes,k,voc_imgs, colorSpace);
     
-    train = buildTrainingData(classes, shuffled(201:400), words, k, 'gray');
+    [train,y] = buildTrainingData(classes, train_imgs, words, k, colorSpace);
     
     ts = tic;
     
@@ -17,9 +16,8 @@ function [faces,cars, motorbikes,airplanes, faces_svm,cars_svm,motorbikes_svm,ai
     airplanes_svm = fitcsvm(train(:,:,4),y); 
     
     toc(ts);
-    [faces,cars,motorbikes, airplanes] = evaluate(classes,words, ...
+    [faces,cars,motorbikes, airplanes] = evaluate(classes,words, k, colorSpace, ...
             faces_svm, cars_svm, motorbikes_svm, airplanes_svm);
     
-    getMAP(faces);
     
 end

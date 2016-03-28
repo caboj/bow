@@ -14,7 +14,6 @@ function [train, y] = buildTrainingData(classes, trainSet, words, k, colorSpace 
             i = i+1;
         end
     end
-    size(train)
     % add trainN negative examples of other classes
     for ci = 1:size(classes,2)
         cls = 1:4;
