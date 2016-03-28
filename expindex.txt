@@ -16,3 +16,5 @@
 16 - poly3
 17 - poly4
 18 - rgb poly 4
+19 - opponent poly 4
+20 - RGB poly 4
